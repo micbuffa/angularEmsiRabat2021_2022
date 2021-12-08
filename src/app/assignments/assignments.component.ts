@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssignmentsComponent implements OnInit {
   titre = "Liste des assignments";
+  couleur = "violet"
   assignments = [
     {
       nom:"Devoir Angular proposé par Mr Buffa",
@@ -29,4 +30,10 @@ export class AssignmentsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getColor(i:number) {
+    if(i===0) return 'blue';
+    if (i===1) return 'green';
+
+    return "orange"
+  }
 }
