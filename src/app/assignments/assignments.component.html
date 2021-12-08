@@ -1,0 +1,13 @@
+<h2>{{titre}}</h2>
+<div *ngFor="let assignment of assignments; let i=index">
+    <p *ngIf="assignment.rendu; else nonsoumis">
+      {{i}} - {{assignment.nom}},
+      a été rendu le  : {{assignment.dateDeRendu}},
+      par l'élève.
+    </p>
+    <ng-template #nonsoumis>
+      <p>{{i}} - {{assignment.nom}} qui devait être rendu le
+      {{assignment.dateDeRendu}}, n'a pas été
+      rendu par l'élève.</p>
+    </ng-template>
+</div>
