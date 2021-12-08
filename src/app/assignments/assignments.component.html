@@ -1,14 +1,32 @@
+<form ngForm #assignmentForm class="form"
+      (submit)="onSubmit(); assignmentForm.reset()">
+  <mat-form-field>
+    <input matInput placeholder="Nom de l'assignment" [(ngModel)]="nomAssignment" name="nom" placeHolder="Nom">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="dateDeRendu" name="date" placeHolder="Date de rendu">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-stroked-button color="primary" >
+    Ajouter un devoir
+  </button>
+</form>
+
+
 <h2>{{titre}}</h2>
-<div *ngFor="let assignment of assignments; let i=index"
->
-    <p *ngIf="assignment.rendu; else nonsoumis">
-      <span appRendu>{{i}} - {{assignment.nom}},
-      a été rendu le  : {{assignment.dateDeRendu}},
-      par l'élève.</span>
-    </p>
-    <ng-template #nonsoumis>
-      <p appNonRendu>{{i}} - {{assignment.nom}} qui devait être rendu le
+<div *ngFor="let assignment of assignments; let i=index">
+  <p appRendu *ngIf="assignment.rendu; else nonsoumis">
+    {{i}} - {{assignment.nom}},
+    a été rendu le : {{assignment.dateDeRendu}},
+    par l'élève.
+  </p>
+  <ng-template #nonsoumis>
+    <p appNonRendu>{{i}} - {{assignment.nom}} qui devait être rendu le
       {{assignment.dateDeRendu}}, n'a pas été
       rendu par l'élève.</p>
-    </ng-template>
+  </ng-template>
 </div>
