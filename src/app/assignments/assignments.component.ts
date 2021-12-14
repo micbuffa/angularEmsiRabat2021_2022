@@ -12,6 +12,7 @@ export class AssignmentsComponent implements OnInit {
   // pour le formulaire
   nomAssignment:string = "";
   dateDeRendu?:Date = undefined;
+  assignmentSelectionne?:Assignment = undefined;
 
   assignments:Assignment[] = [
     {
@@ -49,6 +50,9 @@ export class AssignmentsComponent implements OnInit {
 
       this.assignments.push(nouvelAssignment);
     }
+  }
 
+  assignmentClique(assignment:Assignment) {
+    this.assignmentSelectionne = assignment;
   }
 }
