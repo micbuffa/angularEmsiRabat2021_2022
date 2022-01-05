@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Assignment } from '../assignments/assignment.model';
+import { LoggingService } from './logging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class AssignmentsService {
     }
   ]
 
-  constructor() { }
+  constructor(private loggingService: LoggingService) { }
 
   getAssignments():Observable<Assignment[]> {
     // imaginons qu'on envoie une requête dans le cloud
@@ -41,6 +42,8 @@ export class AssignmentsService {
   addAssignment(assignment:Assignment):Observable<String> {
     this.assignments.push(assignment);
 
+    this.loggingService.log(assignment.nom, "Ajouté");
+
     return of("Service : assignment ajouté avec succès");
   }
 
@@ -49,11 +52,19 @@ export class AssignmentsService {
 
     // Par la suite, on enverra une requête PUT dans le cloud
     // pour faire un update dans le base de données distante
+    this.loggingService.log(assignment.nom, "Modifié");
 
     return of("Service : assignment modifié avec succès");
   }
 
   deleteAssignment(assignment:Assignment):Observable<String> {
-  // a vous de faire !
+    const position = this.assignments.indexOf(assignment);
+    const nombreElementsASupprimer = 1;
+
+    this.assignments.splice(position, nombreElementsASupprimer);
+
+    this.loggingService.log(assignment.nom, "Supprimé");
+
+    return of("Service : assignment supprimé avec succès");
   }
 }
