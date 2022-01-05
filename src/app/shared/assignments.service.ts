@@ -37,4 +37,23 @@ export class AssignmentsService {
     //
     return of(this.assignments);
   }
+
+  addAssignment(assignment:Assignment):Observable<String> {
+    this.assignments.push(assignment);
+
+    return of("Service : assignment ajouté avec succès");
+  }
+
+  updateAssignment(assignment:Assignment):Observable<String> {
+    // POUR LE MOMENT RIEN BESOIN DE FAIRE
+
+    // Par la suite, on enverra une requête PUT dans le cloud
+    // pour faire un update dans le base de données distante
+
+    return of("Service : assignment modifié avec succès");
+  }
+
+  deleteAssignment(assignment:Assignment):Observable<String> {
+  // a vous de faire !
+  }
 }

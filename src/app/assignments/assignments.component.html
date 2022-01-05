@@ -1,42 +1,40 @@
-<form ngForm #assignmentForm class="form" (submit)="onSubmit(); assignmentForm.reset()">
-  <mat-form-field>
-    <input matInput placeholder="Nom de l'assignment" [(ngModel)]="nomAssignment" name="nom" placeHolder="Nom">
-  </mat-form-field>
+<app-add-assignment *ngIf="formVisible"
+                    (nouvelAssignment)="onNouvelAssignment($event)"
+>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepicker]="picker" [(ngModel)]="dateDeRendu" name="date" placeHolder="Date de rendu">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-
-  <button mat-stroked-button color="primary">
-    Ajouter un devoir
-  </button>
-</form>
+</app-add-assignment>
 
 
-<h2>{{titre}}</h2>
 <!--
    <h1 *ngIf="assignmentSelectionne">Assignment cliqué : {{assignmentSelectionne.nom}}</h1>
 -->
-<mat-divider></mat-divider>
 
-<mat-list *ngFor="let assignment of assignments; let i=index">
-  <h3 mat-subheader>{{assignment.dateDeRendu | date}}</h3>
-  <mat-list-item (click)="assignmentClique(assignment)">
-    <p appRendu *ngIf="assignment.rendu; else nonsoumis">
-      {{i}} - {{assignment.nom}},
-      a été rendu par l'élève.
-    </p>
-    <ng-template #nonsoumis>
-      <p appNonRendu>{{i}} - {{assignment.nom}} n'a pas été
-        rendu par l'élève.</p>
-    </ng-template>
-    <mat-divider></mat-divider>
-  </mat-list-item>
-</mat-list>
+<main *ngIf="!formVisible" class="container">
+  <button mat-flat-button color="primary" (click)="onAddAssignmentBtnClick()"
+          class="ajouterBtn">
+    Add assignment
+  </button>
 
-<app-assignment-detail [assignmentTransmis]="assignmentSelectionne">
-</app-assignment-detail>
+  <h2>{{titre}}</h2>
+  <mat-divider></mat-divider>
+  <mat-list *ngFor="let assignment of assignments; let i=index">
+    <h3 mat-subheader>{{assignment.dateDeRendu | date}}</h3>
+    <mat-list-item (click)="assignmentClique(assignment)">
+      <p appRendu *ngIf="assignment.rendu; else nonsoumis">
+        {{i}} - {{assignment.nom}},
+        a été rendu par l'élève.
+      </p>
+      <ng-template #nonsoumis>
+        <p appNonRendu>{{i}} - {{assignment.nom}} n'a pas été
+          rendu par l'élève.</p>
+      </ng-template>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
 
+  <app-assignment-detail [assignmentTransmis]="assignmentSelectionne"
+                         (deleteAssignment)="onDeleteAssignment($event)"
+  >
+  </app-assignment-detail>
+
+</main>

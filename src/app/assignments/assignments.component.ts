@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AssignmentsService } from '../shared/assignments.service';
 import { Assignment } from './assignment.model';
 
 @Component({
@@ -9,50 +10,64 @@ import { Assignment } from './assignment.model';
 export class AssignmentsComponent implements OnInit {
   titre = "Liste des assignments";
   couleur = "violet";
-  // pour le formulaire
-  nomAssignment:string = "";
-  dateDeRendu?:Date = undefined;
-  assignmentSelectionne?:Assignment = undefined;
+  // pour cacher/montrer le formulaire
+  formVisible=false;
+  assignmentSelectionne?:Assignment;
 
-  assignments:Assignment[] = [
-    {
-      nom:"Devoir Angular proposé par Mr Buffa",
-      dateDeRendu: new Date("2022-01-23"),
-      rendu : false
-    },
-    {
-      nom:"Devoir gestion de projet de Mr Winter",
-      dateDeRendu: new Date("2022-01-10"),
-      rendu : false
-    },
-    {
-      nom:"Devoir Hybride de Mr Pascal Bohn",
-      dateDeRendu: new Date("2021-11-01"),
-      rendu : true
-    }
-  ]
-  constructor() { }
+  assignments:Assignment[] = [];
+
+  constructor(private assignmentService:AssignmentsService) { }
 
   ngOnInit(): void {
     // appelé AVANT l'affichage (juste après le constructeur)
     console.log("AVANT AFFICHAGE");
+    // on va demander au service de nous renvoyer les données (les assignments)
+    // typiquement : le service envoie une requête AJAX sur un web service
+    // du cloud...
+
+    // TODO
+    console.log("On demande les assignments au service")
+    this.assignmentService.getAssignments()
+    .subscribe(assignments => {
+      // quand on rentre ici on sait que les données sont prêtes
+      console.log("données reçues")
+      this.assignments = assignments;
+    });
+
+    console.log("demande envoyée au service");
   }
 
-  onSubmit() {
-    console.log(this.dateDeRendu);
-
-    if(this.nomAssignment && this.dateDeRendu) {
-      let nouvelAssignment = new Assignment();
-
-      nouvelAssignment.nom = this.nomAssignment;
-      nouvelAssignment.dateDeRendu = this.dateDeRendu;
-      nouvelAssignment.rendu = false;
-
-      this.assignments.push(nouvelAssignment);
-    }
-  }
 
   assignmentClique(assignment:Assignment) {
     this.assignmentSelectionne = assignment;
+  }
+
+  onAddAssignmentBtnClick() {
+    this.formVisible = true;
+  }
+
+  onNouvelAssignment(assignment:Assignment) {
+    console.log("evenement nouvelAssignment reçu par le père !!!")
+
+    this.assignmentService.addAssignment(assignment)
+    .subscribe(message => {
+      console.log(message);
+      // et on affiche à nouveau la liste !
+      // comme on est dans le subscribe on est sur que les données
+      // ont été ajoutées....
+      this.formVisible = false;
+    })
+  }
+
+  onDeleteAssignment(assignment:Assignment) {
+    // On va le faire via un appel au service !
+
+    /*
+    // on supprime l'assignment de la liste
+    const position = this.assignments.indexOf(assignment);
+    const nombreElementsASupprimer = 1;
+
+    this.assignments.splice(position, nombreElementsASupprimer);
+    */
   }
 }

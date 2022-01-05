@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Assignment } from './assignments/assignment.model';
 
 @Component({
   selector: 'app-root',
