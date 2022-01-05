@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Assignment } from '../assignments/assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
 
@@ -12,7 +12,8 @@ export class AssignmentDetailComponent implements OnInit {
   assignmentTransmis?:Assignment;
 
   constructor(private assignmentsService:AssignmentsService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private router:Router) { }
 
   ngOnInit(): void {
     // avant affichage on doit récupérer la valeur du id dans l'URL
@@ -35,6 +36,9 @@ export class AssignmentDetailComponent implements OnInit {
       this.assignmentsService.updateAssignment(this.assignmentTransmis)
       .subscribe(message => {
         console.log(message);
+
+        // on navigue vers la page d'accueil pour afficher la liste à jour
+        this.router.navigate(["/home"]);
       })
     }
   }
@@ -47,7 +51,22 @@ export class AssignmentDetailComponent implements OnInit {
           console.log(message);
         });
         this.assignmentTransmis = undefined;
+
+        // on navigue vers la page d'accueil pour afficher la liste à jour
+        this.router.navigate(["/home"]);
     }
   }
 
+  onClickEdit() {
+    this.router.navigate(["/assignment", this.assignmentTransmis?.id, "edit"],
+    {
+      queryParams: {
+        nom:"buffa",
+        prenom:"michel",
+        debug:true
+      },
+      fragment:'edition'
+    }
+    );
+  }
 }

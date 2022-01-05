@@ -21,6 +21,7 @@ import { NonRenduDirective } from './shared/non-rendu.directive';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { Routes, RouterModule } from '@angular/router';
+import { EditAssignmentComponent } from './edit-assignment/edit-assignment.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
   {
     path:"assignment/:id",
     component:AssignmentDetailComponent
+  },
+  {
+    path:"assignment/:id/edit",
+    component:EditAssignmentComponent
   }
 ]
 @NgModule({
@@ -47,7 +52,8 @@ const routes: Routes = [
     RenduDirective,
     NonRenduDirective,
     AssignmentDetailComponent,
-    AddAssignmentComponent
+    AddAssignmentComponent,
+    EditAssignmentComponent
   ],
   imports: [
     BrowserModule, FormsModule,
