@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Assignment } from '../assignments/assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
 
@@ -8,18 +9,29 @@ import { AssignmentsService } from '../shared/assignments.service';
   styleUrls: ['./assignment-detail.component.css']
 })
 export class AssignmentDetailComponent implements OnInit {
-  @Input() assignmentTransmis?:Assignment;
-  @Output() deleteAssignment = new EventEmitter<Assignment>();
+  assignmentTransmis?:Assignment;
 
-  constructor(private assignmentsService:AssignmentsService) { }
+  constructor(private assignmentsService:AssignmentsService,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    // avant affichage on doit récupérer la valeur du id dans l'URL
+    // le "+" force la conversion en number
+    const id:number = +this.route.snapshot.params['id'];
+    //console.log("ID = " + id);
+
+    // Puis à partir de l'id on demandera au service de nous renvoyer
+    // l'assignment correspondant....
+    this.assignmentsService.getAssignment(id)
+    .subscribe(assignment => {
+      this.assignmentTransmis = assignment;
+    })
   }
 
   onAssignmentRendu() {
     if(this.assignmentTransmis) {
       this.assignmentTransmis.rendu = true;
-      
+
       this.assignmentsService.updateAssignment(this.assignmentTransmis)
       .subscribe(message => {
         console.log(message);
@@ -30,8 +42,11 @@ export class AssignmentDetailComponent implements OnInit {
   onDelete() {
     // on envoie un evenement au papa
     if(this.assignmentTransmis) {
-      this.deleteAssignment.emit(this.assignmentTransmis);
-      this.assignmentTransmis = undefined;
+       this.assignmentsService.deleteAssignment(this.assignmentTransmis)
+       .subscribe(message => {
+          console.log(message);
+        });
+        this.assignmentTransmis = undefined;
     }
   }
 

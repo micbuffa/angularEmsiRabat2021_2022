@@ -8,5 +8,5 @@ import { Assignment } from './assignments/assignment.model';
 })
 
 export class AppComponent {
-  nomDuProf = "Michel Buffa";
+  titre="Application de gestion des assignments";
 }

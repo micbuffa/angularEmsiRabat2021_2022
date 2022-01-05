@@ -1,40 +1,34 @@
-<app-add-assignment *ngIf="formVisible"
-                    (nouvelAssignment)="onNouvelAssignment($event)"
->
+<main class="container">
 
-</app-add-assignment>
+  <div class="ajouterBtn">
+    <a routerLink="/add">
+      <button mat-flat-button color="primary">
+        Add assignment
+      </button>
+    </a>
+  </div>
 
-
-<!--
-   <h1 *ngIf="assignmentSelectionne">Assignment cliqué : {{assignmentSelectionne.nom}}</h1>
--->
-
-<main *ngIf="!formVisible" class="container">
-  <button mat-flat-button color="primary" (click)="onAddAssignmentBtnClick()"
-          class="ajouterBtn">
-    Add assignment
-  </button>
 
   <h2>{{titre}}</h2>
   <mat-divider></mat-divider>
   <mat-list *ngFor="let assignment of assignments; let i=index">
-    <h3 mat-subheader>{{assignment.dateDeRendu | date}}</h3>
-    <mat-list-item (click)="assignmentClique(assignment)">
-      <p appRendu *ngIf="assignment.rendu; else nonsoumis">
-        {{i}} - {{assignment.nom}},
-        a été rendu par l'élève.
-      </p>
-      <ng-template #nonsoumis>
-        <p appNonRendu>{{i}} - {{assignment.nom}} n'a pas été
-          rendu par l'élève.</p>
-      </ng-template>
-      <mat-divider></mat-divider>
-    </mat-list-item>
+    <nav>
+      <a routerLink="/assignment/{{assignment.id}}">
+        <h3 mat-subheader>{{assignment.dateDeRendu | date}}</h3>
+        <mat-list-item>
+          <p appRendu *ngIf="assignment.rendu; else nonsoumis">
+            {{i}} - {{assignment.nom}},
+            a été rendu par l'élève.
+          </p>
+          <ng-template #nonsoumis>
+            <p appNonRendu>{{i}} - {{assignment.nom}} n'a pas été
+              rendu par l'élève.</p>
+          </ng-template>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </a>
+    </nav>
   </mat-list>
 
-  <app-assignment-detail [assignmentTransmis]="assignmentSelectionne"
-                         (deleteAssignment)="onDeleteAssignment($event)"
-  >
-  </app-assignment-detail>
 
 </main>

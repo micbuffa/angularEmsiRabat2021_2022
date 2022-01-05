@@ -1,3 +1,11 @@
-<h1>Application de gestion des assignments</h1>
+<nav>
+  <a routerLink="/home">
+    <h1>{{titre}}</h1>
+  </a>
+</nav>
 
-<app-assignments></app-assignments>
+<!--
+  La ligne suivante dit "on affiche le composant qui correspond à l'URL courant"
+  (à la route courante)
+-->
+<router-outlet></router-outlet>

@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Assignment } from '../assignments/assignment.model';
+import { AssignmentsService } from '../shared/assignments.service';
 
 @Component({
   selector: 'app-add-assignment',
@@ -7,15 +8,12 @@ import { Assignment } from '../assignments/assignment.model';
   styleUrls: ['./add-assignment.component.css']
 })
 export class AddAssignmentComponent implements OnInit {
-  // Pour la communication, entre autres, avec le composant père
-  @Output() nouvelAssignment = new EventEmitter<Assignment>();
-
   // pour le formulaire
   nomAssignment:string = "";
   dateDeRendu?:Date = undefined;
 
 
-  constructor() { }
+  constructor(private assignmentService:AssignmentsService) { }
 
   ngOnInit(): void {
   }
@@ -29,12 +27,17 @@ export class AddAssignmentComponent implements OnInit {
       newAssignment.nom = this.nomAssignment;
       newAssignment.dateDeRendu = this.dateDeRendu;
       newAssignment.rendu = false;
+      newAssignment.id = Math.round(Math.random() * 1000000);
 
-      //this.assignments.push(nouvelAssignment);
-      // on envoie un événement à l'extérieur (et dans notre cas, le composant père
-      // va l'écouter), et cet événement a pour valeur le nouvel assignment que
-      // l'on veut ajouter
-      this.nouvelAssignment.emit(newAssignment)
+      this.assignmentService.addAssignment(newAssignment)
+      .subscribe(message => {
+        console.log(message);
+
+        // ICI par programme, je vas naviguer vers la page qui affiche la liste
+        // je ne peux pas le faire en dehors du subscribe
+        // car il n'y a que dans le subscribe que je suis sur que l'assignment
+        // a bien été ajouté (ça peut prendre du temps si on utilise une BD distante)
+      });
     }
   }
 

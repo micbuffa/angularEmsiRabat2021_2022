@@ -11,16 +11,19 @@ export class AssignmentsService {
 
   assignments:Assignment[] = [
     {
+      id:1,
       nom:"Devoir Angular proposé par Mr Buffa",
       dateDeRendu: new Date("2022-01-23"),
       rendu : false
     },
     {
+      id:2,
       nom:"Devoir gestion de projet de Mr Winter",
       dateDeRendu: new Date("2022-01-10"),
       rendu : false
     },
     {
+      id:3,
       nom:"Devoir Hybride de Mr Pascal Bohn",
       dateDeRendu: new Date("2021-11-01"),
       rendu : true
@@ -37,6 +40,13 @@ export class AssignmentsService {
     // On va donc non pas renvoyer les données, mais plutôt un objet "observable".
     //
     return of(this.assignments);
+  }
+
+  getAssignment(id:number):Observable<Assignment|undefined> {
+    let assignment;
+    assignment = this.assignments.find(a => a.id === id);
+    
+    return of(assignment);
   }
 
   addAssignment(assignment:Assignment):Observable<String> {
