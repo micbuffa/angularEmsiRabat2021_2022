@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Assignment } from '../assignments/assignment.model';
 import { AssignmentsService } from '../shared/assignments.service';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-assignment-detail',
@@ -13,7 +14,8 @@ export class AssignmentDetailComponent implements OnInit {
 
   constructor(private assignmentsService:AssignmentsService,
               private route: ActivatedRoute,
-              private router:Router) { }
+              private router:Router,
+              private authService:AuthService) { }
 
   ngOnInit(): void {
     // avant affichage on doit récupérer la valeur du id dans l'URL
@@ -68,5 +70,9 @@ export class AssignmentDetailComponent implements OnInit {
       fragment:'edition'
     }
     );
+  }
+
+  isAdmin() {
+    return this.authService.loggedIn;
   }
 }

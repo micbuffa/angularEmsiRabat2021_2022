@@ -7,7 +7,8 @@
     </mat-checkbox>
 
     <nav>
-        <button mat-button mat-flat-button color="primary" (click)="onClickEdit()">
+        <button mat-button mat-flat-button color="primary" (click)="onClickEdit()"
+                [disabled]="!isAdmin()">
           EDIT
         </button>
     </nav>
