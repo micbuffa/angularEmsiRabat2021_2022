@@ -32,8 +32,8 @@ export class AddAssignmentComponent implements OnInit {
       newAssignment.id = Math.round(Math.random() * 1000000);
 
       this.assignmentService.addAssignment(newAssignment)
-      .subscribe(message => {
-        console.log(message);
+      .subscribe(reponse => {
+        console.log("réponse du serveur : " + reponse.message);
 
         // ICI par programme, je vas naviguer vers la page qui affiche la liste
         // je ne peux pas le faire en dehors du subscribe

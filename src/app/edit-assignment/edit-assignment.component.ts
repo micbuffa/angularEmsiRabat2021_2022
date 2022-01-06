@@ -56,8 +56,8 @@ export class EditAssignmentComponent implements OnInit {
 
 
     this.assignmentsService.updateAssignment(this.assignment)
-    .subscribe(message => {
-      console.log(message);
+    .subscribe(reponse => {
+      console.log("Réponse du serveur : " + reponse.message);
 
       // on re-affiche la liste
       this.router.navigate(["/home"]);
