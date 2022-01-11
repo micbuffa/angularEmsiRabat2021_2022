@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ignoreElements } from 'rxjs';
 import { AssignmentsService } from '../shared/assignments.service';
 import { Assignment } from './assignment.model';
 
@@ -31,7 +32,10 @@ export class AssignmentsComponent implements OnInit {
     // typiquement : le service envoie une requête AJAX sur un web service
     // du cloud...
 
-    // TODO
+    this.getAssignments();
+  }
+
+  getAssignments() {
     console.log('On demande les assignments au service');
     this.assignmentService
       .getAssignmentsPagine(this.page, this.limit)
@@ -52,5 +56,28 @@ export class AssignmentsComponent implements OnInit {
       });
 
     console.log('demande envoyée au service');
+  }
+  pageSuivante() {
+    if (this.hasNextPage) {
+      this.page = this.nextPage;
+      this.getAssignments();
+    }
+  }
+
+  pagePrecedente() {
+    if (this.hasPrevPage) {
+      this.page = this.prevPage;
+      this.getAssignments();
+    }
+  }
+
+  dernierePage() {
+    this.page = this.totalPages;
+    this.getAssignments();
+  }
+
+  premierePage() {
+    this.page = 1;
+    this.getAssignments();
   }
 }
