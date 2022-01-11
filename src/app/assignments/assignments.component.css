@@ -7,3 +7,6 @@
   align-self: flex-end;
 }
 
+.paginationBtn {
+  align-self: flex-start;
+}

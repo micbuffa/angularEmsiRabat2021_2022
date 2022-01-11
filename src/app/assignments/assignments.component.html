@@ -10,6 +10,16 @@
 
 
   <h2>{{titre}}</h2>
+  <p>Nb total d'assignments : {{totalDocs}}</p>
+  <p>Nb total de pages : {{totalPages}}</p>
+
+  <div class="paginationBtn">
+    <button mat-raised-button color="primary">Première</button>&nbsp;
+    <button mat-raised-button color="primary">Précédente</button>&nbsp;
+    <button mat-raised-button color="primary">Suivate</button>&nbsp;
+    <button mat-raised-button color="primary">Dernière</button>;
+  </div>
+
   <mat-divider></mat-divider>
   <mat-list *ngFor="let assignment of assignments; let i=index">
     <nav>

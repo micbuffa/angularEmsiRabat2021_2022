@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
 import { Assignment } from '../assignments/assignment.model';
 import { LoggingService } from './logging.service';
+import { bdInitialAssignments } from "./data";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,10 @@ export class AssignmentsService {
 
   getAssignments():Observable<Assignment[]> {
     return this.http.get<Assignment[]>(this.url);
+  }
+
+  getAssignmentsPagine(page:number, limit:number):Observable<any> {
+    return this.http.get<any>(this.url + "?page=" + page + "&limit=" + limit);
   }
 
   getAssignment(id:number):Observable<Assignment|undefined> {
@@ -55,4 +60,38 @@ export class AssignmentsService {
     this.loggingService.log(assignment.nom, "Supprimé");
     return this.http.delete(this.url + "/" + assignment._id);
   }
+
+  // version naive, on ne peut pas savoir quand tous les addAssignments sont terminés....
+  peuplerBD() {
+    bdInitialAssignments.forEach(a => {
+      let nouvelAssignment = new Assignment();
+      nouvelAssignment.id = a.id;
+      nouvelAssignment.nom = a.nom;
+      nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
+      nouvelAssignment.rendu = a.rendu;
+
+      this.addAssignment(nouvelAssignment)
+      .subscribe(reponse => {
+        console.log(reponse.message);
+      })
+    });
+    console.log("###### TOUS LES ASSIGNMENTS SONT AJOUTES !!!! ######")
+  }
+
+  // version 2, bien mieux, on peut savoir quand tous les adds sont terminés
+  peuplerBDAvecForkJoin(): Observable<any> {
+    const appelsVersAddAssignment:any = [];
+
+    bdInitialAssignments.forEach((a) => {
+      let nouvelAssignment = new Assignment();
+      nouvelAssignment.id = a.id;
+      nouvelAssignment.nom = a.nom;
+      nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
+      nouvelAssignment.rendu = a.rendu;
+
+      appelsVersAddAssignment.push(this.addAssignment(nouvelAssignment));
+    });
+    return forkJoin(appelsVersAddAssignment); // renvoie un seul Observable pour dire que c'est fini
+  }
+
 }
