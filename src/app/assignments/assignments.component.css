@@ -10,3 +10,30 @@
 .paginationBtn {
   align-self: flex-start;
 }
+
+.demo-table {
+  width: 50%;
+}
+
+.mat-column-demo-id {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.mat-column-demo-nom {
+  width: 600px;
+  padding-left: 16px;
+  font-size: 20px;
+}
+
+.mat-column-demo-dateRendu {
+  font-style: italic;
+}
+
+.mat-column-demo-rendu {
+  width: 32px;
+  text-align: center;
+  font-weight: bold;
+}

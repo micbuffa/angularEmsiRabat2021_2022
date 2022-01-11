@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ignoreElements } from 'rxjs';
 import { AssignmentsService } from '../shared/assignments.service';
 import { Assignment } from './assignment.model';
 
@@ -20,6 +19,9 @@ export class AssignmentsComponent implements OnInit {
   prevPage: number = 0;
   hasNextPage: boolean = false;
   nextPage: number = 0;
+
+  // pour l'affichage en table
+  displayedColumns: string[] = ['demo-id', 'demo-nom', 'demo-dateDeRendu', 'demo-rendu'];
 
   assignments: Assignment[] = [];
 
